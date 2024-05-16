@@ -1,0 +1,31 @@
+{
+  "name": "taskpulse-nexus",
+  "version": "1.0.0",
+  "description": "TaskPulse Nexus signifies an application that efficiently connects and manages tasks, ensuring nothing slips through the cracks. It’s a powerful tool for productivity and staying on top of your responsibilities!",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon -r dotenv/config src/index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "prisma"
+  ],
+  "author": "M Ali Gohar",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.14.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.5"
+  }
+}
