@@ -1,1 +1,1 @@
-export const DB_NAME = "TaskPulse Nexus";
+export const DB_NAME = "TaskPulse_Nexus";
