@@ -3,13 +3,12 @@ import {
   findUserByEmail,
   validatePassword,
 } from "../models/user.model.js";
-import { ApiError } from "../utils/ApiError.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.util.js";
 import { cookieToken } from "../utils/cookieToken.js";
 
-export const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const { userName, fullName, email, password } = req.body;
 
@@ -35,15 +34,21 @@ export const registerUser = asyncHandler(async (req, res) => {
     cookieToken(user, res);
   } catch (error) {
     if (error.message === "Username or email already exists") {
-      return res.status(400).json({ error: error.message });
+      return res
+        .status(400)
+        .json(new ApiResponse(400, "Username or email already exists"));
     }
 
     console.error("Error in registerUser:", error);
-    throw new ApiError(500, "Something went wrong while registring the user.");
+    res
+      .status(400)
+      .json(
+        new ApiResponse(400, "Somthing went wrong while registering the user.")
+      );
   }
-});
+};
 
-export const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -59,11 +64,15 @@ export const loginUser = asyncHandler(async (req, res) => {
 
     cookieToken(user, res);
   } catch (error) {
-    throw new ApiError(500, "Something went wrong while logging in the user.");
+    res
+      .status(400)
+      .json(
+        new ApiResponse(400, "Somthing went wrong while logging in the user.")
+      );
   }
-});
+};
 
-export const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = async (req, res) => {
   try {
     res.clearCookie("token");
 
@@ -71,4 +80,4 @@ export const logoutUser = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(500, "Something went wrong while logging out the user.");
   }
-});
+};
