@@ -1,4 +1,7 @@
 import jwt from "jsonwebtoken";
+
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { prisma } from "../prismaClient.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
@@ -7,7 +10,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
       req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new Error("Unauthorized request");
+      throw new ApiError(401, "Unauthorized request");
     }
 
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -18,12 +21,12 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     });
 
     if (!user) {
-      throw new Error("Invalid access token");
+      throw new ApiError(401, "Invalid access token");
     }
 
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ error: error?.message || "Invalid access token" });
+    throw new ApiError(401, error?.message || "Invalid access token");
   }
 });

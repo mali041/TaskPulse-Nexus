@@ -16,8 +16,16 @@ import userRouter from "./routers/user.route.js";
 app.use("/api/v1/users", userRouter);
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Internal Server Error" });
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({
+      success: false,
+      message: err.message,
+    });
+  }
+  return res.status(500).json({
+    success: false,
+    message: err.message,
+  });
 });
 
 export { app };
