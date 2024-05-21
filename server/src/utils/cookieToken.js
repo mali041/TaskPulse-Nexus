@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
+import getJwtToken from "../helper/getJwtToken.js";
 
 export const cookieToken = (user, res) => {
   // Generate a JWT token
-  const token = jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-  });
+  const token = getJwtToken(user.id);
 
   // Set options for the cookie
   const options = {

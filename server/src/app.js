@@ -11,9 +11,11 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 import userRouter from "./routers/user.route.js";
+import taskRouter from "./routers/task.route.js";
 
 // routes declaration
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tasks", taskRouter);
 
 app.use((err, req, res, next) => {
   if (err.name === "UnauthorizedError") {

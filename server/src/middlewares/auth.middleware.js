@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { prisma } from "../prismaClient.js";
+
+const prisma = new PrismaClient();
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
     const token =
-      req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
-
+      req.cookies?.token || req.header("Authorization")?.repalce("Bearer ", "");
     if (!token) {
       throw new ApiError(401, "Unauthorized request");
     }
@@ -17,7 +18,6 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
     const user = await prisma.user.findUnique({
       where: { id: decodedToken.userId },
-      select: { password: false }, // Exclude password
     });
 
     if (!user) {
