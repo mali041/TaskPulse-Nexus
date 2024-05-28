@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FormControl,
   Input,
@@ -12,8 +12,12 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../util.js";
+import { useUser } from "../context/UserContext";
 
 function SignUp() {
+  const { updateUser } = useUser();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -21,7 +25,37 @@ function SignUp() {
   } = useForm();
 
   const doSubmit = async (values) => {
-    toast.success("Account created!, You are Login now");
+    const formData = new FormData();
+    formData.append("userName", values.userName);
+    formData.append("fullName", values.fullName);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("avatar", values.avatar[0]);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Signup failed");
+      }
+
+      const data = await response.json();
+      if (response.status === 201) {
+        toast.success("Account created! You are logged in now");
+        updateUser(data);
+        navigate("/profile");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    }
   };
 
   return (
@@ -116,29 +150,3 @@ function SignUp() {
 }
 
 export default SignUp;
-/*
-const doSubmit = async (values) => {
-    const formData = new FormData();
-    formData.append("userName", values.userName);
-    formData.append("fullName", values.fullName);
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-    formData.append("avatar", values.avatar[0]);
-
-    try {
-      const response = await fetch("/api/v1/users/register", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Signup failed");
-      }
-
-      const data = await response.json();
-      toast.success("Account created! You are logged in now");
-    } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    }
-  };
-  */
