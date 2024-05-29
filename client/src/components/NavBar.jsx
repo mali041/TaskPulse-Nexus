@@ -20,15 +20,19 @@ export default function NavBar() {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/signout`, {
+      const res = await fetch(`${API_BASE_URL}/users/logout`, {
         credentials: "include",
       });
-      const data = await res.json();
-      toast.success(data.message);
-      updateUser(null);
-      navigate("/");
+      if (res.ok) {
+        const data = await res.json();
+        toast.success(data.message);
+        updateUser(null);
+        navigate("/");
+      } else {
+        throw new Error("Failed to sign out");
+      }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to sign out");
     }
   };
 
@@ -54,8 +58,8 @@ export default function NavBar() {
                 <Image
                   boxSize="40px"
                   borderRadius="full"
-                  src={user.avatar}
-                  alt={user.username}
+                  src={user?.user?.avatar}
+                  alt={user?.user?.username}
                 />
               </MenuButton>
               <MenuList>

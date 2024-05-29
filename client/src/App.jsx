@@ -5,6 +5,7 @@ import { Home, SignIn, SignUp, Profile } from "./pages";
 
 import { UserProvider } from "./context/UserContext";
 import PrivateRoute from "./components/PrivateRoute";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <UserProvider>
         <ChakraProvider>
           <Router>
+            <NavBar />
             <Toaster position="bottom-right" />
             <Routes>
               <Route path="/" element={<Home />} />

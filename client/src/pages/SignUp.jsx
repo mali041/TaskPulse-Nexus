@@ -32,27 +32,26 @@ function SignUp() {
     formData.append("password", values.password);
     formData.append("avatar", values.avatar[0]);
 
+    // Log FormData content
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: formData,
+        body: formData, // No need to set Content-Type header
       });
 
       if (!response.ok) {
-        throw new Error("Signup failed");
+        const data = await response.json();
+        throw new Error(data.error || "Signup failed");
       }
 
       const data = await response.json();
-      if (response.status === 201) {
-        toast.success("Account created! You are logged in now");
-        updateUser(data);
-        navigate("/profile");
-      } else {
-        toast.error(data.message);
-      }
+      toast.success("Account created! You are logged in now");
+      updateUser(data);
+      navigate("/profile");
     } catch (error) {
       toast.error(error.message || "Something went wrong");
     }
@@ -70,7 +69,6 @@ function SignUp() {
         Create an Account
       </Heading>
       <form onSubmit={handleSubmit(doSubmit)}>
-        {/* form details... */}
         <Stack gap="4">
           <FormControl isInvalid={errors.userName}>
             <Input
