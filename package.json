@@ -1,0 +1,12 @@
+{
+  "name": "taskpulse-nexus",
+  "version": "1.0.0",
+  "description": "Sure, here is a comprehensive `README.md` file that includes information and instructions for both the frontend and backend of your TaskPulse Nexus project, along with a combined script to start both parts of the project.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

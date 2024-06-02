@@ -130,7 +130,7 @@ Then, in the root of your project (where both `frontend` and `backend` folders a
   "name": "taskpulse-nexus",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
   }
 }
 ```
