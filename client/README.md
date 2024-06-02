@@ -1,7 +1,3 @@
-Here's the `README.md` file specifically for the frontend part of your TaskPulse Nexus project:
-
----
-
 # TaskPulse Nexus - Frontend
 
 TaskPulse Nexus is an application designed to efficiently manage and connect tasks, ensuring nothing slips through the cracks. This part of the project focuses on the frontend, built with React and Chakra UI.

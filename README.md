@@ -1,7 +1,3 @@
-Sure, here is a comprehensive `README.md` file that includes information and instructions for both the frontend and backend of your TaskPulse Nexus project, along with a combined script to start both parts of the project.
-
----
-
 # TaskPulse Nexus
 
 TaskPulse Nexus is an application designed to efficiently manage and connect tasks, ensuring nothing slips through the cracks. This repository contains both the frontend and backend code for the application.

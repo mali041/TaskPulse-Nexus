@@ -1,9 +1,3 @@
-Got it! I'll include the Prisma configuration and schema information in the `README.md` file.
-
-Here's the updated `README.md` file:
-
----
-
 # TaskPulse Nexus
 
 TaskPulse Nexus signifies an application that efficiently connects and manages tasks, ensuring nothing slips through the cracks. It’s a powerful tool for productivity and staying on top of your responsibilities!
