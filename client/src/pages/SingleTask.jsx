@@ -1,7 +1,113 @@
-import React from "react";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../util";
+import {
+  Badge,
+  Box,
+  Flex,
+  Heading,
+  Stack,
+  Text,
+  Link,
+  Card,
+  CardBody,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { BsChevronLeft } from "react-icons/bs";
+import DeleteConfirmation from "../components/DeleteConfirmation";
+import SingleTaskSkeleton from "../_skeletons/SingleTaskSkeleton";
 
-function SingleTask() {
-  return <div>SingleTask</div>;
+export default function SingleTask() {
+  const [task, setTask] = useState();
+  const { taskId } = useParams();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setTask(data.message); // Update to access the task object from the message field
+      } catch (error) {
+        console.error("Error fetching task:", error);
+      }
+    };
+    fetchTask();
+  }, [taskId]);
+
+  const handleDeleteTask = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        navigate("/tasks");
+      } else {
+        console.error(data.message); // Log error message
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  if (!task) {
+    return <SingleTaskSkeleton />;
+  }
+
+  return (
+    <Box p="3" maxW="lg" mx="auto">
+      <Link
+        as={RouterLink}
+        to={`/tasks`}
+        color="teal"
+        _hover={{ textDecor: "none" }}
+        display="flex"
+        alignItems="center"
+      >
+        <BsChevronLeft /> All Tasks
+      </Link>
+      <Heading fontSize="3xl" fontWeight="semibold" textAlign="center" my="7">
+        {task.title}
+      </Heading>
+      <Stack direction="row">
+        <Badge
+          fontSize="md"
+          colorScheme={task.status === "open" ? "orange" : "green"}
+        >
+          {task.status}
+        </Badge>
+        {task.due && <Text>{new Date(task.due).toLocaleDateString()}</Text>}
+      </Stack>
+      <Card mt="4" border="1px solid" borderColor="gray.200">
+        <CardBody>
+          <Text>{task.description}</Text>
+        </CardBody>
+      </Card>
+      <Flex justify="space-between" mt="5">
+        <Text as="span" color="red.600" cursor="pointer" onClick={onOpen}>
+          Delete Task
+        </Text>
+        <Link
+          as={RouterLink}
+          to={`/update-task/${task.id}`} // Update to access the task ID
+          color="teal"
+          _hover={{ textDecor: "none" }}
+        >
+          Edit Task
+        </Link>
+      </Flex>
+
+      <DeleteConfirmation
+        alertTitle="Delete Task"
+        handleClick={handleDeleteTask}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+    </Box>
+  );
 }
-
-export default SingleTask;

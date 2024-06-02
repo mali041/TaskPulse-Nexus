@@ -76,3 +76,18 @@ export const getTasks = asyncHandler(async (req, res, next) => {
     throw new ApiError(404, "Something went wrong while retrieving the tasks.");
   }
 });
+
+export const getTaskById = asyncHandler(async (req, res, next) => {
+  try {
+    const taskId = req.params.id; // Use req.params.id instead of req.params.Id
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+    if (!task) {
+      throw new ApiError(404, "Task not found");
+    }
+    res.json(new ApiResponse(200, "Task retrieved successfully", task));
+  } catch (error) {
+    next(error);
+  }
+});

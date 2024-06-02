@@ -6,6 +6,7 @@ import CreateTask from "./CreateTask";
 import UpdateTask from "./UpdateTask";
 import SingleTask from "./SingleTask";
 import Tasks from "./Tasks";
+import NotFound from "./NotFound";
 
 export {
   Home,
@@ -16,4 +17,5 @@ export {
   UpdateTask,
   SingleTask,
   Tasks,
+  NotFound,
 };
